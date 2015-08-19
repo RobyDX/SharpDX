@@ -105,14 +105,22 @@
     <map enum-item="D3D12_ROOT_PARAMETER_TYPE_32BIT_CONSTANTS" name="Constant32Bits"/>
     <map enum-item="D3D_ROOT_SIGNATURE_VERSION(.*)" name-tmp="Version$1"/>
     <map enum-item="D3D12_SHADER_MIN_PRECISION_SUPPORT_(\d*)_BIT" name-tmp="Bit$1"/>
-    
+    <map enum-item="D3D12_DSV_FLAG(.*)" name-tmp="$1"/>
     <!--
     // *****************************************************************
     // D3D12 Struct
     // *****************************************************************
     -->
+    
+    <map field="D3D12_.*::p([A-Z].*)" name="$1Pointer" visibility="public"/>
 
+    <map field="D3D12_MESSAGE::pDescription" name="Description" visibility="public"/>
+    
     <map struct="D3D12_.*_PIPELINE_STATE_DESC" struct-to-class="true" marshalto="true"/>
+    <map struct="D3D12_COMMAND_SIGNATURE_DESC" struct-to-class="true" marshalto="true"/>
+    <map field="D3D12_COMMAND_SIGNATURE_DESC::NumArgumentDescs" visibility="internal"/>
+    <map field="D3D12_COMMAND_SIGNATURE_DESC::pArgumentDescs" visibility="internal"/>
+
     <map field="D3D12_.*_PIPELINE_STATE_DESC::p([A-Z].*)" name="$1Pointer" visibility="private"/>
     <map field="D3D12_GRAPHICS_PIPELINE_STATE_DESC::RTVFormats" name="RenderTargetFormats"/>
     <map field="D3D12_GRAPHICS_PIPELINE_STATE_DESC::DSVFormat" name="DepthStencilFormat"/>
@@ -173,6 +181,7 @@
     <map struct="D3D12_CACHED_PIPELINE_STATE::pCachedBlob" name="CachedBlobPointer"/>
 
     <map interface="ID3D12Debug" name="DebugInterface"/>
+    <remove struct="D3D12_MEMCPY_DEST"/>
 
     <!--
     // *****************************************************************
@@ -250,6 +259,7 @@
     
     <map method="ID3D12Device::CreateCommandSignature" visibility="private"/>
     <map param="ID3D12Device::CreateCommandSignature::ppvCommandSignature" attribute="out" type="ID3D12CommandSignature" return="true"/>
+    <map param="ID3D12Device::CreateCommandSignature::pDesc" type="void"/>
     
     <map method="ID3D12Device::CreateHeap" visibility="private"/>
     <map param="ID3D12Device::CreateHeap::ppvHeap" attribute="out" type="ID3D12Heap" return="true"/>
@@ -286,7 +296,7 @@
     <map param="ID3D12Resource::Map::pReadRange" default="null"/>
     <map param="ID3D12Resource::Unmap::pWrittenRange" default="null"/>
     <map param="ID3D12Resource::Map::ppData" attribute="out" return="true"/>
-    
+        
     <!--
     // *****************************************************************
     // D3D12 Functions
