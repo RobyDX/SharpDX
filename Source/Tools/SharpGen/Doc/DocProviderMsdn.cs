@@ -158,10 +158,10 @@ namespace SharpGen.Doc
             }
             if (oldName != name)
             {
-                Console.WriteLine("Documentation: Use name [{0}] instead of [{1}]", name, oldName);
+                //Console.WriteLine("Documentation: Use name [{0}] instead of [{1}]", name, oldName);
             }
 
-            Logger.Progress(20 + (counter/50) % 10, "Applying C++ documentation ([{0}])", name);
+            //Logger.Progress(20 + (counter/50) % 10, "Applying C++ documentation ([{0}])", name);
 
             string doc = GetDocumentationFromCacheOrMsdn(name);
             if(doc == null)
@@ -212,14 +212,14 @@ namespace SharpGen.Doc
                 }
                 else
                 {
-                    return null;
-
                     // Begin update if zip is not updated
                     if (!isZipUpdated)
                     {
                         _zipFile.BeginUpdate();
                         isZipUpdated = true;
                     }
+
+                    Logger.Progress(20 + (counter/50) % 10, "Fetching C++ documentation ([{0}]) from MSDN", name);
 
                     doc = GetDocumentationFromMsdn(name);
                     
@@ -239,6 +239,8 @@ namespace SharpGen.Doc
 
                 if (!File.Exists(fileName))
                 {
+                    Logger.Progress(20 + (counter / 50) % 10, "Fetching C++ documentation ([{0}]) from MSDN", name);
+
                     doc = GetDocumentationFromMsdn(name);
                     File.WriteAllText(fileName, doc);
                 }
@@ -516,7 +518,7 @@ namespace SharpGen.Doc
                     return response.primaryDocuments[0].Any.OuterXml;
             } catch (Exception ex)
             {
-                Logger.Warning("MTPS error for id {0} : {1}", shortId, ex.Message);
+                //Logger.Warning("MTPS error for id {0} : {1}", shortId, ex.Message);
             }
             return string.Empty;
         }
@@ -551,7 +553,7 @@ namespace SharpGen.Doc
             } 
             catch (Exception ex)
             {
-                Logger.Warning("Unable to get id for [{0}] (Reason: {1})", name, ex.Message);
+                //Logger.Warning("Unable to get id for [{0}] (Reason: {1})", name, ex.Message);
             }
 
             return string.Empty;
